@@ -276,6 +276,9 @@ public abstract class GameLobby implements IHasGameType {
             data.appliedVariants.remove(GameType.Vanguard);
             data.appliedVariants.remove(GameType.MomirBasic);
             break;
+        case Limited:
+            // Limited can coexist with other variants since it just affects deck size
+            break;
         default:
             break;
         }
@@ -397,7 +400,8 @@ public abstract class GameLobby implements IHasGameType {
         if (checkLegality && autoGenerateVariant == null && !isCommanderMatch) {
             for (final LobbySlot slot : activeSlots) {
                 final String name = slot.getName();
-                final String errMsg = GameType.Constructed.getDeckFormat().getDeckConformanceProblem(slot.getDeck());
+                final GameType deckFormatGameType = hasVariant(GameType.Limited) ? GameType.Limited : GameType.Constructed;
+                final String errMsg = deckFormatGameType.getDeckFormat().getDeckConformanceProblem(slot.getDeck());
                 if (null != errMsg) {
                     SOptionPane.showErrorDialog(Localizer.getInstance().getMessage("lblPlayerDeckError", name, errMsg), Localizer.getInstance().getMessage("lblInvalidDeck"));
                     return null;

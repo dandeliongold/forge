@@ -30,6 +30,7 @@ public enum GameType {
     AdventureEvent      (DeckFormat.Limited, true, true, true, "lblAdventure", ""),
     Puzzle              (DeckFormat.Puzzle, false, false, false, "lblPuzzle", "lblPuzzleDesc"),
     Constructed         (DeckFormat.Constructed, false, true, true, "lblConstructed", ""),
+    Limited             (DeckFormat.Limited, false, true, true, "lblLimited", ""),
     DeckManager         (DeckFormat.Constructed, false, true, true, "lblDeckManager", ""),
     Vanguard            (DeckFormat.Vanguard, true, true, true, "lblVanguard", "lblVanguardDesc"),
     Commander           (DeckFormat.Commander, false, false, false, "lblCommander", "lblCommanderDesc"),

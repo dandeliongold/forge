@@ -80,6 +80,7 @@ public class VLobby implements ILobbyView {
 
     // Variants frame and variables
     private final FPanel variantsPanel = new FPanel(new MigLayout("insets 10, gapx 10"));
+    private final VariantCheckBox vntLimited = new VariantCheckBox(GameType.Limited);
     private final VariantCheckBox vntVanguard = new VariantCheckBox(GameType.Vanguard);
     private final VariantCheckBox vntMomirBasic = new VariantCheckBox(GameType.MomirBasic);
     private final VariantCheckBox vntMoJhoSto = new VariantCheckBox(GameType.MoJhoSto);
@@ -91,9 +92,9 @@ public class VLobby implements ILobbyView {
     private final VariantCheckBox vntArchenemy = new VariantCheckBox(GameType.Archenemy);
     private final VariantCheckBox vntArchenemyRumble = new VariantCheckBox(GameType.ArchenemyRumble);
     private final ImmutableList<VariantCheckBox> vntBoxesLocal  =
-            ImmutableList.of(vntVanguard, vntMomirBasic, vntMoJhoSto, vntCommander, vntOathbreaker, vntBrawl, vntTinyLeaders, vntPlanechase, vntArchenemy, vntArchenemyRumble);
+            ImmutableList.of(vntLimited, vntVanguard, vntMomirBasic, vntMoJhoSto, vntCommander, vntOathbreaker, vntBrawl, vntTinyLeaders, vntPlanechase, vntArchenemy, vntArchenemyRumble);
     private final ImmutableList<VariantCheckBox> vntBoxesNetwork =
-            ImmutableList.of(vntVanguard, vntMomirBasic, vntMoJhoSto, vntCommander, vntOathbreaker, vntBrawl, vntTinyLeaders /*, vntPlanechase, vntArchenemy, vntArchenemyRumble */);
+            ImmutableList.of(vntLimited, vntVanguard, vntMomirBasic, vntMoJhoSto, vntCommander, vntOathbreaker, vntBrawl, vntTinyLeaders /*, vntPlanechase, vntArchenemy, vntArchenemyRumble */);
 
     // Player frame elements
     private final JPanel playersFrame = new JPanel(new MigLayout("insets 0, gap 0 5, wrap, hidemode 3"));
@@ -559,6 +560,7 @@ public class VLobby implements ILobbyView {
         }
 
         switch (forGameType) {
+        case Limited:
         case Constructed:
             decksFrame.add(getDeckChooser(playerWithFocus), "grow, push");
             if (getDeckChooser(playerWithFocus).getSelectedDeckType().toString().contains(localizer.getMessage("lblRandom"))) {
@@ -790,6 +792,11 @@ public class VLobby implements ILobbyView {
                 forCommander = true;
                 deckType = iSlot == 0 ? DeckType.BRAWL_DECK : DeckType.CUSTOM_DECK;
                 prefKey = FPref.BRAWL_DECK_STATES[iSlot];
+                break;
+            case Limited:
+                forCommander = false;
+                deckType = DeckType.CUSTOM_DECK; // Always use CUSTOM_DECK for Limited regardless of slot
+                prefKey = FPref.CONSTRUCTED_DECK_STATES[iSlot];
                 break;
             default:
                 forCommander = false;
